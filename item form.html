@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Item Form</title>
+<link rel="stylesheet" href="style.css">
+<script>
+function validateForm() {
+  var status = true;
+
+  var itemName = document.getElementById("itemName").value;
+  var costPrice = parseFloat(document.getElementById("costPrice").value);
+  var sellPrice = parseFloat(document.getElementById("sellPrice").value);
+  var discount = parseFloat(document.getElementById("discount").value);
+  var category = document.getElementById("category").value;
+  var company = document.getElementById("company").value;
+  var forWhom = document.getElementsByName("forWhom");
+  var forWhomSelected = false;
+
+  for (var i = 0; i < forWhom.length; i++) {
+    if (forWhom[i].checked) {
+      forWhomSelected = true;
+    }
+  }
+
+ 
+  if (itemName.length < 2) {
+    document.getElementById("itemNameErr").innerHTML = "Enter a valid item name.";
+    status = false;
+  } else {
+    document.getElementById("itemNameErr").innerHTML = "";
+  }
+
+  if (isNaN(costPrice) || costPrice <= 0) {
+    document.getElementById("costPriceErr").innerHTML = "Enter a valid cost price.";
+    status = false;
+  } else {
+    document.getElementById("costPriceErr").innerHTML = "";
+  }
+
+ 
+  if (isNaN(sellPrice) || sellPrice <= 0) {
+    document.getElementById("sellPriceErr").innerHTML = "Enter a valid sell price.";
+    status = false;
+  } else if (sellPrice <= costPrice) {
+    document.getElementById("sellPriceErr").innerHTML = "Sell price should be greater than cost price.";
+    status = false;
+  } else {
+    document.getElementById("sellPriceErr").innerHTML = "";
+  }
+
+  
+  if (!isNaN(sellPrice) && !isNaN(costPrice) && sellPrice > costPrice) {
+    if (isNaN(discount) || discount < 0) {
+      document.getElementById("discountErr").innerHTML = "Enter a valid discount.";
+      status = false;
+    } else {
+      var maxDiscount = sellPrice * 0.25;
+      var priceAfterDiscount = sellPrice - discount;
+
+      if (discount > maxDiscount) {
+        document.getElementById("discountErr").innerHTML =
+          "Discount should not be more than 25% of sell price (max " + maxDiscount.toFixed(2) + ").";
+        status = false;
+      } else if (priceAfterDiscount < costPrice) {
+        document.getElementById("discountErr").innerHTML =
+          "Price after discount should not be less than cost price.";
+        status = false;
+      } else {
+        document.getElementById("discountErr").innerHTML = "";
+      }
+    }
+  }
+
+  if (category === "") {
+    document.getElementById("categoryErr").innerHTML = "Select a category.";
+    status = false;
+  } else {
+    document.getElementById("categoryErr").innerHTML = "";
+  }
+
+
+  if (company === "") {
+    document.getElementById("companyErr").innerHTML = "Select a company.";
+    status = false;
+  } else {
+    document.getElementById("companyErr").innerHTML = "";
+  }
+
+  
+  if (!forWhomSelected) {
+    document.getElementById("forWhomErr").innerHTML = "Select an option.";
+    status = false;
+  } else {
+    document.getElementById("forWhomErr").innerHTML = "";
+  }
+
+  if (status) {
+    alert("Form submitted successfully.");
+  }
+
+  return status;
+}
+</script>
+</head>
+<body>
+
+<div class="form-box">
+
+  <h2>Item Details Form</h2>
+
+  <form onsubmit="return validateForm();">
+
+    <table>
+      <tr>
+        <td>Item Name</td>
+        <td>
+          <input type="text" id="itemName">
+          <span class="err" id="itemNameErr"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Cost Price</td>
+        <td>
+          <input type="number" id="costPrice">
+          <span class="err" id="costPriceErr"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Sell Price</td>
+        <td>
+          <input type="number" id="sellPrice">
+          <span class="err" id="sellPriceErr"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Discount</td>
+        <td>
+          <input type="number" id="discount">
+          <span class="err" id="discountErr"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Category</td>
+        <td>
+          <select id="category">
+            <option value="">Select category</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Footwear">Footwear</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Home">Home</option>
+          </select>
+          <span class="err" id="categoryErr"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Company</td>
+        <td>
+          <select id="company">
+            <option value="">Select company</option>
+            <option value="Nike">Nike</option>
+            <option value="Adidas">Adidas</option>
+            <option value="Puma">Puma</option>
+            <option value="Woodland">Woodland</option>
+            <option value="Other">Other</option>
+          </select>
+          <span class="err" id="companyErr"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>For Whom</td>
+        <td>
+          <label><input type="radio" name="forWhom" value="His"> His</label>
+          <label><input type="radio" name="forWhom" value="Her"> Her</label>
+          <label><input type="radio" name="forWhom" value="Generic"> Generic</label>
+          <br>
+          <span class="err" id="forWhomErr"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="2" align="center">
+          <button type="submit">Submit</button>
+        </td>
+      </tr>
+    </table>
+
+  </form>
+
+</div>
+
+</body>
+</html>
