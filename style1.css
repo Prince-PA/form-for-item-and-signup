@@ -69,7 +69,7 @@ button:hover {
   text-decoration: underline;
 }
 
-/* overlay covers the whole page, on top of everything else */
+
 .overlay {
   display: none;          
   position: fixed;        
